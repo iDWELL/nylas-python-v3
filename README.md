@@ -51,7 +51,7 @@ After you've installed and set up the Nylas Python SDK, you can make your first 
 The SDK is organized into different resources, each of which has methods to make requests to the Nylas API. Each resource is available through the `Client` object that you configured with your API key. For example, you can use this code to get a list of Calendars:
 
 ```python
-from nylas import Client
+from nylas_v3 import Client
 
 nylas = Client(
     api_key="API_KEY",
@@ -70,15 +70,15 @@ event, request_id = nylas.events.create(
         }
     },
     query_params={"calendar_id": "primary", "notify_participants": True},
-    )
+)
 )
 
 event, request_id = nylas.events.find(
-    identifier="GRANT_ID",
-    event_id=event.id,
-    query_params={
-        "calendar_id": "primary",
-    },
+identifier = "GRANT_ID",
+event_id = event.id,
+query_params = {
+                   "calendar_id": "primary",
+               },
 )
 
 nylas.events.destroy("GRANT_ID", event.id, {"calendar_id": "primary"})
