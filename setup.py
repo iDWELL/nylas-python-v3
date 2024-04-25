@@ -109,7 +109,7 @@ def main():
             sys.exit()
 
     setup(
-        name="nylas",
+        name="nylas_v3",
         version=VERSION,
         python_requires=">=3.8",
         packages=find_packages(),
