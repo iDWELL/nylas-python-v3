@@ -18,6 +18,9 @@ ParticipantStatus = Literal["noreply", "yes", "no", "maybe"]
 SendRsvpStatus = Literal["yes", "no", "maybe"]
 """ Literal representing the status of an RSVP. """
 
+EventType = Literal["default", "outOfOffice", "focusTime", "workingLocation"]
+""" Literal representing the event type to filter by. """
+
 
 @dataclass_json
 @dataclass
@@ -34,7 +37,7 @@ class Participant:
     """
 
     email: str
-    status: ParticipantStatus
+    status: Optional[ParticipantStatus] = None
     name: Optional[str] = None
     comment: Optional[str] = None
     phone_number: Optional[str] = None
@@ -316,12 +319,12 @@ class Event:
     calendar_id: str
     busy: bool
     participants: List[Participant]
-    visibility: Visibility
     when: When = field(metadata=config(decoder=_decode_when))
     conferencing: Optional[Conferencing] = field(
         default=None, metadata=config(decoder=_decode_conferencing)
     )
     object: str = "event"
+    visibility: Optional[Visibility] = None
     read_only: Optional[bool] = None
     description: Optional[str] = None
     location: Optional[str] = None
@@ -722,6 +725,8 @@ class ListEventQueryParams(ListQueryParams):
             This field defaults to 50. The maximum allowed value is 200.
         page_token (NotRequired[str]): An identifier that specifies which page of data to return.
             This value should be taken from a ListResponse object's next_cursor parameter.
+        event_type (NotRequired[List[EventType]]): (Google only) Filter events by event type.
+            You can pass the query parameter multiple times to select or exclude multiple event types.
     """
 
     calendar_id: str
@@ -735,6 +740,7 @@ class ListEventQueryParams(ListQueryParams):
     expand_recurring: NotRequired[bool]
     busy: NotRequired[bool]
     order_by: NotRequired[str]
+    event_type: NotRequired[List[EventType]]
 
 
 class CreateEventQueryParams(TypedDict):

@@ -114,16 +114,18 @@ class CodeExchangeResponse:
         refresh_token: Returned only if the code is requested using "access_type=offline".
         id_token: A JWT that contains identity information about the user. Digitally signed by Nylas.
         token_type: Always "Bearer".
+        provider: The provider that the code was exchanged with.
     """
 
     access_token: str
     grant_id: str
-    scope: str
     expires_in: int
     email: Optional[str] = None
     refresh_token: Optional[str] = None
+    scope: Optional[str] = None
     id_token: Optional[str] = None
     token_type: Optional[str] = None
+    provider: Optional[Provider] = None
 
 
 @dataclass_json

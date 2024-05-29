@@ -113,6 +113,7 @@ def http_client_token_exchange():
         "scope": "https://www.googleapis.com/auth/gmail.readonly profile",
         "token_type": "Bearer",
         "grant_id": "grant_123",
+        "provider": "google",
     }
     return mock_http_client
 
@@ -185,6 +186,35 @@ def http_client_list_scheduled_messages():
                 "schedule_id": "rb856334-6d95-432c-86d1-c5dab0ce98be",
                 "status": {"code": "sucess", "description": "schedule send succeeded"},
                 "close_time": 1690579819,
+            },
+        ],
+    }
+    return mock_http_client
+
+
+@pytest.fixture
+def http_client_clean_messages():
+    mock_http_client = Mock()
+    mock_http_client._execute.return_value = {
+        "request_id": "dd3ec9a2-8f15-403d-b269-32b1f1beb9f5",
+        "data": [
+            {
+                "body": "Hello, I just sent a message using Nylas!",
+                "from": [
+                    {"name": "Daenerys Targaryen", "email": "daenerys.t@example.com"}
+                ],
+                "grant_id": "41009df5-bf11-4c97-aa18-b285b5f2e386",
+                "id": "message-1",
+                "object": "message",
+                "conversation": "cleaned example",
+            },
+            {
+                "body": "Hello, this is a test message!",
+                "from": [{"name": "Michael Scott", "email": "m.scott@email.com"}],
+                "grant_id": "41009df5-bf11-4c97-aa18-b285b5f2e386",
+                "id": "message-2",
+                "object": "message",
+                "conversation": "another example",
             },
         ],
     }
