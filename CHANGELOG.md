@@ -1,6 +1,29 @@
 nylas-python Changelog
 ======================
 
+v6.4.0
+----------------
+* Add support for from field for sending messages
+* Add missing schedule-specific fields to Message model
+* Add migration grant properties
+* Fix from field not being optional causing deserialization errors
+* Fix IMAP identifiers not encoding correctly
+* Fix NylasOAuthError not setting the status code properly
+
+v6.3.1
+----------------
+* Fix typo on Clean Messages
+* Remove use of TestCommand
+* Add Folder Webhooks
+* Fix request session being reused across multiple requests
+
+
+v6.3.0
+----------------
+* Added Folder query param support
+* Added `master_event_id` field to events
+* Fixed issue with application models not being deserialized correctly
+
 v6.2.0
 ----------------
 * Added support for custom headers field for drafts and messages
@@ -187,7 +210,7 @@ v5.0.0
 * Transitioned from `app_id` and `app_secret` naming to `client_id` and `client_secret`
 * Add support for the Nylas Neural API
 * Add `metadata` field in the Event model to support new event metadata feature
-* Add new Room Resource fields  
+* Add new Room Resource fields
 * Add `Nylas-API-Version` header support
 * Fix adding a tracking object to an existing `draft`
 * Fix issue when converting offset-aware `datetime` objects to `timestamp`

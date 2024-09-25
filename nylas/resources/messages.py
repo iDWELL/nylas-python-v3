@@ -1,4 +1,5 @@
 import io
+import urllib.parse
 from typing import Optional, List
 
 from nylas.config import RequestOverrides
@@ -96,7 +97,7 @@ class Messages(
             The requested Message.
         """
         return super().find(
-            path=f"/v3/grants/{identifier}/messages/{message_id}",
+            path=f"/v3/grants/{identifier}/messages/{urllib.parse.quote(message_id, safe='')}",
             response_type=Message,
             query_params=query_params,
             overrides=overrides,
@@ -122,7 +123,7 @@ class Messages(
             The updated Message.
         """
         return super().update(
-            path=f"/v3/grants/{identifier}/messages/{message_id}",
+            path=f"/v3/grants/{identifier}/messages/{urllib.parse.quote(message_id, safe='')}",
             response_type=Message,
             request_body=request_body,
             overrides=overrides,
@@ -143,7 +144,8 @@ class Messages(
             The deletion response.
         """
         return super().destroy(
-            path=f"/v3/grants/{identifier}/messages/{message_id}", overrides=overrides
+            path=f"/v3/grants/{identifier}/messages/{urllib.parse.quote(message_id, safe='')}",
+            overrides=overrides,
         )
 
     def send(
@@ -166,6 +168,9 @@ class Messages(
         path = f"/v3/grants/{identifier}/messages/send"
         form_data = None
         json_body = None
+
+        # From is a reserved keyword in Python, so we need to pull the data from 'from_' instead
+        request_body["from"] = request_body.get("from_", None)
 
         # Use form data only if the attachment size is greater than 3mb
         attachment_size = sum(
@@ -281,11 +286,11 @@ class Messages(
         Returns:
             The list of cleaned messages.
         """
-        json_resposne = self._http_client._execute(
+        json_response = self._http_client._execute(
             method="PUT",
             path=f"/v3/grants/{identifier}/messages/clean",
             request_body=request_body,
             overrides=overrides,
         )
 
-        return ListResponse.from_dict(json_resposne, CleanMessagesResponse)
+        return ListResponse.from_dict(json_response, CleanMessagesResponse)
